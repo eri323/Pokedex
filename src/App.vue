@@ -70,7 +70,9 @@ const links1 = ref([
 ]);
 const pokemonData = ref([]);
 const Mostrar = ref(false);
+const MostrarMain = ref(true);
 async function obtenerurlsPokemon() {
+ 
   pokemonData.value = [];
   for (const link of links1.value) {
     let data = await axios.get(link);
@@ -92,6 +94,7 @@ async function obtenerurlsPokemon() {
   /* Mostrar.value = true */
 }
 async function obtenerDetallesPokemon() {
+  
   pokemonData.value = [];
   for (const link of links1.value) {
     let data = await axios.get(link);
@@ -111,13 +114,16 @@ async function obtenerDetallesPokemon() {
     });
   }
   Mostrar.value = true
+  MostrarMain.value = false
 }
 function getColorByType(tipo) {
   if (tipo === "fire") {
     return "#FDDFDF";
   } else if (tipo === "grass") {
     return "#DEFDE0";
-  } else if (tipo === "electric") {
+  } else if (tipo === "grass" && tipo === "poison") {
+    return "#DEFDE0";
+  }else if (tipo === "electric") {
     return "#FCF7DE";
   } else if (tipo === "water") {
     return "#DEF3FD";
@@ -128,9 +134,9 @@ function getColorByType(tipo) {
   } else if (tipo === "fairy") {
     return "#fceaff";
   } else if (tipo === "poison") {
-    return "#98d7a5";
+    return "#E1D1FF";
   } else if (tipo === "bug") {
-    return "#f8d5a3";
+    return "#E6FFC9";
   } else if (tipo === "dragon") {
     return "#97b3e6";
   } else if (tipo === "psychic") {
@@ -159,9 +165,9 @@ onMounted(() => {
       <h1>Pokedex</h1>
     </div>
 
-    <div class="main">
+    <div class="main" v-if="MostrarMain">
       <buuton v-for="(pokemon, index) in pokemonData" :key="index"
-      :style="{ backgroundColor: getColorByType(pokemon.tipoPk[0]) }"
+      :style="{ backgroundColor: getColorByType(pokemon.tipoPk[0])}"
       class="Tarjeta"
       @click="obtenerDetallesPokemon()">
         <div class="containerImgTarjeta">
@@ -194,6 +200,10 @@ onMounted(() => {
         </div>
         <div>
           <div class="datos" v-for="(i, index) in pokemonData" :key="index">
+            <img :src="img" class="img" />
+            <h2 class="Id">#{{ i.Id }}</h2>
+          <h2>{{ i.name }}</h2>
+          <h2>Tipo: {{ i.tipoPk[0] }} {{ i.tipoPk[1] }} </h2>
             <h2>HP: {{ i.StatHp }}</h2>
             <h2>Attack: {{ i.Attack }}</h2>
             <h2>Defense: {{ i.Defense }}</h2>
