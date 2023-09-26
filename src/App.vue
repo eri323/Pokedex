@@ -5,24 +5,49 @@
     </div>
 
     <div class="main" v-if="MostrarMain">
-      <button v-for="(pokemon, index) in pokemonData" :key="index"
-        :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }" 
+      <button
+        v-for="(pokemon, index) in pokemonData"
+        :key="index"
+        :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }"
         @click="obtenerDetallesPokemon(pokemon)"
-        class="Tarjeta">
-
+        class="Tarjeta"
+      >
         <div class="containerImgTarjeta">
           <img :src="pokemon.img" alt="" class="imgTarjeta" />
         </div>
         <div class="containerDatosTarjeta">
-          <p style="margin: 0;" class="IdTarjeta">#{{ pokemon.numero }}</p>
-          <p style="margin: 0;">{{ pokemon.nombre }}</p>
-          <p style="margin: 0;" v-if="MostrarMain">{{ pokemon.tipo_pk[0] }} {{ pokemon.tipo_pk[1] }} </p>
+          <p style="margin: 0" class="IdTarjeta">#{{ pokemon.numero }}</p>
+          <p style="margin: 0" class="NameTarjeta">{{ pokemon.nombre }}</p>
+          <span style="display: flex"
+            ><p
+              style="margin: 0px 7px"
+              class="Typetarjeta"
+              v-for="(tipo, index) in pokemon.tipo_pk"
+              :key="index"
+              :style="{ backgroundColor: getColorByTypeDetalle(tipo) }"
+            >
+              {{ tipo }}
+            </p>
+            <!-- <p
+              style="margin: 0px 7px"
+              class="Typetarjeta"
+              v-for="(tipo, index) in pokemon.tipo_pk"
+              :key="index"
+              :style="{ backgroundColor: getColorByTypeDetalle(tipo) }"
+            >
+              {{ tipo}}
+            </p> --></span
+          >
         </div>
       </button>
     </div>
 
-    <div class="Detalles" v-if="Mostrar"  :style="{ backgroundColor: getColorByType() }">
-      <div class="funcion"  >
+    <div
+      class="Detalles"
+      v-if="Mostrar"
+      :style="{ background: getColorByTypeFondo(tipoPk[0]) }"
+    >
+      <div class="funcion">
         <div class="funcionPart1">
           <div class="nameContainer">
             <h2 class="name">{{ name }}</h2>
@@ -32,17 +57,19 @@
             <h2 class="Id">#{{ Id }}</h2>
             <img :src="img" class="img" />
           </div>
-          <div class="Types" >
-            <h2 v-for="(item, index) in tipoPk" :key="index" class="types"  
-            :style="{ backgroundColor: getColorByTypeDetalle(item) }">
+          <div class="Types">
+            <h2
+              v-for="(item, index) in tipoPk"
+              :key="index"
+              class="types"
+              :style="{ backgroundColor: getColorByTypeDetalle(item) }"
+            >
               {{ item }}
             </h2>
           </div>
         </div>
         <div>
-          <div class="datos" >
-            
-            
+          <div class="datos">
             <h2>{{ nombre }}</h2>
 
             <h2>HP: {{ StatHp }}</h2>
@@ -64,17 +91,17 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
-let img = ref('');
-let name = ref('');
-let Id = ref('');
-let StatHp = ref('');
-let Attack = ref('');
-let Defense = ref('');
-let SpecialAttack = ref('');
-let SpecialDefense = ref('');
-let Speed = ref('');
-let Weight = ref('');
-let Height = ref('');
+let img = ref("");
+let name = ref("");
+let Id = ref("");
+let StatHp = ref("");
+let Attack = ref("");
+let Defense = ref("");
+let SpecialAttack = ref("");
+let SpecialDefense = ref("");
+let Speed = ref("");
+let Weight = ref("");
+let Height = ref("");
 let tipoPk = ref([]);
 
 let pokemonData = ref([]);
@@ -83,7 +110,9 @@ let MostrarMain = ref(true);
 
 async function obtenerDetallesPokemon(pokemon) {
   try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.numero}`);
+    const response = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${pokemon.numero}`
+    );
     const data = response.data;
 
     img.value = data.sprites.other["official-artwork"].front_default;
@@ -107,15 +136,15 @@ async function obtenerDetallesPokemon(pokemon) {
 }
 
 function Volver() {
-  img.value = '';
-  Id.value = '';
-  name.value = '';
-  StatHp.value = '';
-  Attack.value = '';
-  Defense.value = '';
-  SpecialAttack.value = '';
-  SpecialDefense.value = '';
-  Speed.value = '';
+  img.value = "";
+  Id.value = "";
+  name.value = "";
+  StatHp.value = "";
+  Attack.value = "";
+  Defense.value = "";
+  SpecialAttack.value = "";
+  SpecialDefense.value = "";
+  Speed.value = "";
   tipoPk.value = [];
   Mostrar.value = false;
   MostrarMain.value = true;
@@ -171,7 +200,7 @@ function getColorByTypeDetalle(tipo) {
     case "fairy":
       return "#ED7FFF";
     case "poison":
-      return "#B600C8";
+      return "#BC00FF";
     case "bug":
       return "#87C800";
     case "dragon":
@@ -184,7 +213,39 @@ function getColorByTypeDetalle(tipo) {
       return "#663030";
     default:
       return "3A6630";
-      
+  }
+}
+
+function getColorByTypeFondo(tipo) {
+  switch (tipo) {
+    /*  case "fire":
+      return "#FF2D00";
+    case "grass":
+      return "#009121"; */
+    case "electric":
+    return "url('./assets/Electric.jpg')";
+    /* case "water":
+      return "#00B7FF";
+    case "ground":
+      return "#635200";
+    case "rock":
+      return "#525252";
+    case "fairy":
+      return "#ED7FFF"; */
+    case "poison":
+      return "url('./assets/Poison.jpg')";
+    /* case "bug":
+      return "#87C800";
+    case "dragon":
+      return "#AC0000";
+    case "psychic":
+      return "#008F88";
+    case "flying":
+      return "#6D6984";
+    case "fighting":
+      return "#663030"; */
+    default:
+      return "white";
   }
 }
 
@@ -195,7 +256,9 @@ onMounted(() => {
 async function obtenerUrlsPokemon() {
   try {
     for (let i = 1; i <= 50; i++) {
-      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`);
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${i}`
+      );
       const data = response.data;
 
       pokemonData.value.push({
@@ -221,11 +284,10 @@ async function obtenerUrlsPokemon() {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: black;
   color: white;
   margin: 0;
-  gap: 15px;
   font-family: "Pa ver";
+  padding: 100px 0px 0px 0px;
 }
 
 @font-face {
@@ -251,6 +313,7 @@ async function obtenerUrlsPokemon() {
   gap: 15px;
   cursor: pointer;
   width: 200px;
+  border: none;
 }
 
 .containerDatosTarjeta {
@@ -290,6 +353,9 @@ async function obtenerUrlsPokemon() {
   display: flex;
   justify-content: center;
   padding: 5px 0px;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .main {
@@ -302,7 +368,7 @@ async function obtenerUrlsPokemon() {
 
 .Detalles {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -318,7 +384,7 @@ async function obtenerUrlsPokemon() {
   flex-direction: column;
   flex-wrap: wrap;
 }
-.PokeRes{
+.PokeRes {
   background-color: transparent;
   border: none;
   font-family: "Pa ver";
@@ -343,7 +409,6 @@ async function obtenerUrlsPokemon() {
 }
 
 .types {
-  
   padding: 10px;
   border-radius: 10px;
 }
@@ -359,7 +424,15 @@ async function obtenerUrlsPokemon() {
   background-color: rgba(0, 0, 0, 0.337);
   border-radius: 5px;
 }
+.NameTarjeta::first-letter,
+.Typetarjeta::first-letter {
+  text-transform: uppercase;
+}
 
+.Typetarjeta {
+  padding: 5px;
+  border-radius: 15px;
+}
 .name {
   font-size: 100px;
   margin: 0;
