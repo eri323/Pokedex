@@ -2,30 +2,35 @@
   <div class="body">
     <div class="nav">
       <button class="PokeRes" @click="Volver()">Pokedex</button>
+      <div class="ContainerOpcs">
+        <div class="input-wrapper">
+          <button class="icon">
+            Buscar
+            <i class="fa-solid fa-magnifying-glass" style="color: black;"></i>
+          </button>
+          <input v-model="searchQuery" class="input" name="text" type="text">
+        </div>
+        <button class="BtnFiltrar">
+          <i class="fa-sharp fa-solid fa-filter" style="color: black;"></i>
+          Filtrar
+        </button>
+
+      </div>
     </div>
 
     <div class="main" v-if="MostrarMain">
-      <button
-        v-for="(pokemon, index) in pokemonData"
-        :key="index"
-        :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }"
-        @click="obtenerDetallesPokemon(pokemon)"
-        class="Tarjeta"
-      >
+      <button v-for="(pokemon, index) in filteredPokemonData" :key="index"
+        :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }" @click="obtenerDetallesPokemon(pokemon)"
+        class="Tarjeta">
         <div class="containerImgTarjeta">
           <img :src="pokemon.img" alt="" class="imgTarjeta" />
         </div>
         <div class="containerDatosTarjeta">
           <p style="margin: 0" class="IdTarjeta">#{{ pokemon.numero }}</p>
           <p style="margin: 0" class="NameTarjeta">{{ pokemon.nombre }}</p>
-          <span style="display: flex"
-            ><p
-              style="margin: 0px 7px"
-              class="Typetarjeta"
-              v-for="(tipo, index) in pokemon.tipo_pk"
-              :key="index"
-              :style="{ backgroundColor: getColorByTypeDetalle(tipo) }"
-            >
+          <span style="display: flex">
+            <p style="margin: 0px 7px" class="Typetarjeta" v-for="(tipo, index) in pokemon.tipo_pk" :key="index"
+              :style="{ backgroundColor: getColorByTypeDetalle(tipo) }">
               {{ tipo }}
             </p>
             <!-- <p
@@ -36,17 +41,14 @@
               :style="{ backgroundColor: getColorByTypeDetalle(tipo) }"
             >
               {{ tipo}}
-            </p> --></span
-          >
+            </p> -->
+          </span>
         </div>
       </button>
     </div>
 
-    <div
-      class="Detalles"
-      v-if="Mostrar"
-      :style="{ background: getColorByTypeFondo(tipoPk[0]) }"
-    >
+    <div class="Detalles" v-if="Mostrar" v-for="(item, index) in tipoPk" :key="index"
+                :style="{ backgroundImage: getColorByTypeFondo(item) }">
       <div class="funcion">
         <div class="funcionPart1">
           <div class="nameContainer">
@@ -58,12 +60,8 @@
             <img :src="img" class="img" />
           </div>
           <div class="Types">
-            <h2
-              v-for="(item, index) in tipoPk"
-              :key="index"
-              class="types"
-              :style="{ backgroundColor: getColorByTypeDetalle(item) }"
-            >
+            <h2 v-for="(item, index) in tipoPk" :key="index" class="types"
+              :style="{ backgroundColor: getColorByTypeDetalle(item) }">
               {{ item }}
             </h2>
           </div>
@@ -89,7 +87,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 let img = ref("");
 let name = ref("");
@@ -99,14 +97,30 @@ let Attack = ref("");
 let Defense = ref("");
 let SpecialAttack = ref("");
 let SpecialDefense = ref("");
+let searchQuery = ref("");
 let Speed = ref("");
 let Weight = ref("");
 let Height = ref("");
 let tipoPk = ref([]);
 
+
 let pokemonData = ref([]);
 let Mostrar = ref(false);
 let MostrarMain = ref(true);
+function search() {
+  const query = searchQuery.value.toLowerCase();
+  return pokemonData.value.filter(pokemon =>
+    pokemon.nombre.toLowerCase().includes(query)
+  );
+}
+
+let filteredPokemonData = computed(() => {
+  if (searchQuery.value.trim() === "") {
+    return pokemonData.value; // Mostrar todas las tarjetas si no hay consulta
+  } else {
+    return search(); // Mostrar tarjetas filtradas en función de la consulta
+  }
+});
 
 async function obtenerDetallesPokemon(pokemon) {
   try {
@@ -146,6 +160,8 @@ function Volver() {
   SpecialDefense.value = "";
   Speed.value = "";
   tipoPk.value = [];
+  // Reemplaza esto con la forma correcta de obtener la lista completa
+  searchQuery.value = ""; // Restablecer el campo de búsqueda
   Mostrar.value = false;
   MostrarMain.value = true;
 }
@@ -212,18 +228,18 @@ function getColorByTypeDetalle(tipo) {
     case "fighting":
       return "#663030";
     default:
-      return "3A6630";
+      return "aqua";
   }
 }
 
 function getColorByTypeFondo(tipo) {
   switch (tipo) {
-    /*  case "fire":
+     /* case "fire":
       return "#FF2D00";
     case "grass":
       return "#009121"; */
     case "electric":
-    return "url('./assets/Electric.jpg')";
+      return "url('./assets/Electric.jpg')";
     /* case "water":
       return "#00B7FF";
     case "ground":
@@ -234,7 +250,7 @@ function getColorByTypeFondo(tipo) {
       return "#ED7FFF"; */
     case "poison":
       return "url('./assets/Poison.jpg')";
-    /* case "bug":
+   /*  case "bug":
       return "#87C800";
     case "dragon":
       return "#AC0000";
@@ -244,8 +260,8 @@ function getColorByTypeFondo(tipo) {
       return "#6D6984";
     case "fighting":
       return "#663030"; */
-    default:
-      return "white";
+    /* default:
+      return "white"; */
   }
 }
 
@@ -287,7 +303,7 @@ async function obtenerUrlsPokemon() {
   color: white;
   margin: 0;
   font-family: "Pa ver";
-  padding: 100px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
 }
 
 @font-face {
@@ -302,7 +318,14 @@ async function obtenerUrlsPokemon() {
 .imgTarjeta {
   width: 100px;
 }
-
+.BtnFiltrar{
+  font-family: "Pa ver";
+  color: #ffffff;
+  font-size: 25px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
 .Tarjeta {
   display: flex;
   flex-direction: column;
@@ -314,6 +337,7 @@ async function obtenerUrlsPokemon() {
   cursor: pointer;
   width: 200px;
   border: none;
+  font-family: "Pa ver";
 }
 
 .containerDatosTarjeta {
@@ -356,12 +380,16 @@ async function obtenerUrlsPokemon() {
   position: fixed;
   top: 0;
   width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+
 }
 
 .main {
   display: flex;
   justify-content: center;
   padding: 0px 200px;
+  margin-top: 110px;
   flex-wrap: wrap;
   gap: 85px;
 }
@@ -370,6 +398,7 @@ async function obtenerUrlsPokemon() {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 .funcion {
@@ -378,12 +407,15 @@ async function obtenerUrlsPokemon() {
   flex-wrap: wrap;
   align-items: center;
 }
-
+.ContainerOpcs{
+  display: flex;
+}
 .datos {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
 }
+
 .PokeRes {
   background-color: transparent;
   border: none;
@@ -392,6 +424,7 @@ async function obtenerUrlsPokemon() {
   font-size: 55px;
   cursor: pointer;
 }
+
 .containerImg {
   display: flex;
   align-items: center;
@@ -424,6 +457,7 @@ async function obtenerUrlsPokemon() {
   background-color: rgba(0, 0, 0, 0.337);
   border-radius: 5px;
 }
+
 .NameTarjeta::first-letter,
 .Typetarjeta::first-letter {
   text-transform: uppercase;
@@ -433,6 +467,7 @@ async function obtenerUrlsPokemon() {
   padding: 5px;
   border-radius: 15px;
 }
+
 .name {
   font-size: 100px;
   margin: 0;
@@ -442,5 +477,69 @@ async function obtenerUrlsPokemon() {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: .5s ease-in-out;
+
+  color: #fff;
+
+  padding: 0px 12px 0px 0px;
+}
+
+.input {
+  border-style: none;
+  height: 50px;
+  width: 0px;
+  display: flex;
+  align-content: center;
+  outline: none;
+  border-radius: 100%;
+  transition: .5s ease-in-out;
+  background-color: rgb(0, 89, 255);
+  padding: 0px 12px 0px 0px;
+}
+
+.input::placeholder,
+.input {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 17px;
+}
+
+.input::placeholder {
+  color: #8f8f8f;
+}
+
+.icon {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+/*   width: 150px; */
+  height: 50px;
+  outline: none;
+  border-style: none;
+  border-radius: 50%;
+  pointer-events: painted;
+  background-color: transparent;
+  transition: .2s linear;
+  color: #ffffff;
+  font-size: 25px;
+  font-family: "Pa ver";
+}
+
+.icon:focus~.input,
+.input:focus {
+  box-shadow: none;
+  width: 250px;
+  border-radius: 0px;
+  background-color: transparent;
+  border-bottom: 2px solid #ffffff;
+  transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 }
 </style>
