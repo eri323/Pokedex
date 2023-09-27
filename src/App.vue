@@ -6,22 +6,26 @@
         <div class="input-wrapper">
           <button class="icon">
             Buscar
-            <i class="fa-solid fa-magnifying-glass" style="color: black;"></i>
+            <i class="fa-solid fa-magnifying-glass" style="color: black"></i>
           </button>
-          <input v-model="searchQuery" class="input" name="text" type="text">
+          <input v-model="searchQuery" class="input" name="text" type="text" />
         </div>
         <button class="BtnFiltrar">
-          <i class="fa-sharp fa-solid fa-filter" style="color: black;"></i>
+          <i class="fa-sharp fa-solid fa-filter" style="color: #000000"></i>
           Filtrar
         </button>
-
       </div>
     </div>
 
     <div class="main" v-if="MostrarMain">
-      <button v-for="(pokemon, index) in filteredPokemonData" :key="index"
-        :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }" @click="obtenerDetallesPokemon(pokemon)"
-        class="Tarjeta">
+      <div class="ContainerTarjetas">
+        <button
+        v-for="(pokemon, index) in filteredPokemonData"
+        :key="index"
+        :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }"
+        @click="obtenerDetallesPokemon(pokemon)"
+        class="Tarjeta"
+      >
         <div class="containerImgTarjeta">
           <img :src="pokemon.img" alt="" class="imgTarjeta" />
         </div>
@@ -29,8 +33,13 @@
           <p style="margin: 0" class="IdTarjeta">#{{ pokemon.numero }}</p>
           <p style="margin: 0" class="NameTarjeta">{{ pokemon.nombre }}</p>
           <span style="display: flex">
-            <p style="margin: 0px 7px" class="Typetarjeta" v-for="(tipo, index) in pokemon.tipo_pk" :key="index"
-              :style="{ backgroundColor: getColorByTypeDetalle(tipo) }">
+            <p
+              style="margin: 0px 7px"
+              class="Typetarjeta"
+              v-for="(tipo, index) in pokemon.tipo_pk"
+              :key="index"
+              :style="{ backgroundColor: getColorByTypeDetalle(tipo) }"
+            >
               {{ tipo }}
             </p>
             <!-- <p
@@ -45,10 +54,26 @@
           </span>
         </div>
       </button>
+      </div>
+      <div class="ContainerBtnVerMas">
+        <button class="BtnVerMas">
+          <div>
+            <span>
+              <p>Hover Me</p>
+            </span>
+          </div>
+          <div>
+            <span>
+              <i class="fa-solid fa-plus"></i>
+            </span>
+          </div>
+        </button>
+      </div>   
     </div>
 
-    <div class="Detalles" v-if="Mostrar" v-for="(item, index) in tipoPk" :key="index"
-                :style="{ backgroundImage: getColorByTypeFondo(item) }">
+
+
+    <div class="Detalles" v-if="Mostrar">
       <div class="funcion">
         <div class="funcionPart1">
           <div class="nameContainer">
@@ -60,24 +85,77 @@
             <img :src="img" class="img" />
           </div>
           <div class="Types">
-            <h2 v-for="(item, index) in tipoPk" :key="index" class="types"
-              :style="{ backgroundColor: getColorByTypeDetalle(item) }">
+            <h2
+              v-for="(item, index) in tipoPk"
+              :key="index"
+              class="types"
+              :style="{ backgroundColor: getColorByTypeDetalle(item) }"
+            >
               {{ item }}
             </h2>
           </div>
         </div>
-        <div>
+        <div class="containerDatos">
           <div class="datos">
-            <h2>{{ nombre }}</h2>
+           
 
-            <h2>HP: {{ StatHp }}</h2>
-            <h2>Attack: {{ Attack }}</h2>
-            <h2>Defense: {{ Defense }}</h2>
-            <h2>SpecialAttack: {{ SpecialAttack }}</h2>
-            <h2>SpecialDefense: {{ SpecialDefense }}</h2>
-            <h2>Speed: {{ Speed }}</h2>
-            <h2>Weight: {{ Weight }}KG</h2>
-            <h2>Height: {{ Height }}</h2>
+            <h2 >
+              HP
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (StatHp/300)*100 + '%' }"></div>
+              </div>
+              {{ StatHp }}
+            </h2>
+
+            <h2>
+              Attack
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (Attack/300)*100 + '%' }"></div>
+              </div>
+              {{ Attack }}
+            </h2>
+            <h2>
+              Defense
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (Defense/300)*100 + '%' }"></div>
+              </div>
+              {{ Defense }}
+            </h2>
+            <h2>
+              SpecialAttack
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (SpecialAttack/300)*100 + '%' }"></div>
+              </div>
+              {{ SpecialAttack }}
+            </h2>
+            <h2>
+              SpecialDefense
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (SpecialDefense/300)*100 + '%' }"></div>
+              </div>
+              {{ SpecialDefense }}
+            </h2>
+            <h2>
+              Speed
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (Speed/300)*100 + '%' }"></div>
+              </div>
+              {{ Speed }}
+            </h2>
+            <h2>
+              Weight
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: (Weight/1000) * 100 + '%' }"></div>
+              </div>
+              {{ Weight }} KG
+            </h2>
+            <h2>
+              Height
+              <div class="progress-bar">
+                <div class="progress" :style="{ width: Height + '%' }"></div>
+              </div>
+              {{ Height }}
+            </h2>
           </div>
         </div>
       </div>
@@ -103,13 +181,12 @@ let Weight = ref("");
 let Height = ref("");
 let tipoPk = ref([]);
 
-
 let pokemonData = ref([]);
 let Mostrar = ref(false);
 let MostrarMain = ref(true);
 function search() {
   const query = searchQuery.value.toLowerCase();
-  return pokemonData.value.filter(pokemon =>
+  return pokemonData.value.filter((pokemon) =>
     pokemon.nombre.toLowerCase().includes(query)
   );
 }
@@ -234,7 +311,7 @@ function getColorByTypeDetalle(tipo) {
 
 function getColorByTypeFondo(tipo) {
   switch (tipo) {
-     /* case "fire":
+    /* case "fire":
       return "#FF2D00";
     case "grass":
       return "#009121"; */
@@ -250,7 +327,7 @@ function getColorByTypeFondo(tipo) {
       return "#ED7FFF"; */
     case "poison":
       return "url('./assets/Poison.jpg')";
-   /*  case "bug":
+    /*  case "bug":
       return "#87C800";
     case "dragon":
       return "#AC0000";
@@ -315,10 +392,68 @@ async function obtenerUrlsPokemon() {
   width: 500px;
 }
 
+
+.BtnVerMas {
+  outline: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 140px;
+  height: 50px;
+  border-radius: 0.5em;
+  box-shadow: 0 0.625em 1em 0 rgba(30, 143, 255, 0.35);
+  overflow: hidden;
+ }
+ 
+ .BtnVerMas div {
+  transform: translateY(0px);
+  width: 100%;
+ }
+ 
+ .BtnVerMas,
+ .BtnVerMas div {
+  transition: 0.6s cubic-bezier(.16,1,.3,1);
+ }
+ 
+ .BtnVerMas div span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0.75em 1.125em;
+ }
+ 
+ .BtnVerMas div:nth-child(1) {
+  background-color: #1e90ff;
+ }
+ 
+ .BtnVerMas div:nth-child(2) {
+  background-color: #21dc62;
+ }
+ 
+ .BtnVerMas:hover {
+  box-shadow: 0 0.625em 1em 0 rgba(33, 220, 98, 0.35);
+ }
+ 
+ .BtnVerMas:hover div {
+  transform: translateY(-50px);
+ }
+ 
+ .BtnVerMas p {
+  font-size: 17px;
+  font-weight: bold;
+  color: #ffffff;
+ }
+ 
+ .BtnVerMas:active {
+  transform: scale(0.95);
+ }
+
 .imgTarjeta {
   width: 100px;
 }
-.BtnFiltrar{
+.BtnFiltrar {
   font-family: "Pa ver";
   color: #ffffff;
   font-size: 25px;
@@ -339,7 +474,12 @@ async function obtenerUrlsPokemon() {
   border: none;
   font-family: "Pa ver";
 }
-
+.ContainerTarjetas{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 85px;
+  justify-content: space-around;
+}
 .containerDatosTarjeta {
   display: flex;
   flex-direction: column;
@@ -375,47 +515,63 @@ async function obtenerUrlsPokemon() {
   background-color: rgb(0, 89, 255);
   margin: 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   padding: 5px 0px;
   position: fixed;
   top: 0;
   width: 100%;
   align-items: center;
   flex-wrap: wrap;
-
 }
 
 .main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   padding: 0px 200px;
   margin-top: 110px;
-  flex-wrap: wrap;
-  gap: 85px;
+  
 }
-
+.ContainerBtnVerMas{
+  display: flex;
+  width: 100%;
+}
 .Detalles {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  margin-top: 100px;
 }
 
 .funcion {
   display: flex;
-  gap: 65px;
+  width: 90%;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-around;
 }
-.ContainerOpcs{
+.ContainerOpcs {
   display: flex;
+ 
 }
 .datos {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  justify-content: space-between;
+  width: 80%;
+  
 }
-
+.containerDatos{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.datos h2{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
 .PokeRes {
   background-color: transparent;
   border: none;
@@ -475,6 +631,7 @@ async function obtenerUrlsPokemon() {
 
 .funcionPart1 {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
 }
@@ -484,11 +641,9 @@ async function obtenerUrlsPokemon() {
   align-items: center;
   justify-content: center;
   border: none;
-  transition: .5s ease-in-out;
+  transition: 0.5s ease-in-out;
 
   color: #fff;
-
-  padding: 0px 12px 0px 0px;
 }
 
 .input {
@@ -499,14 +654,15 @@ async function obtenerUrlsPokemon() {
   align-content: center;
   outline: none;
   border-radius: 100%;
-  transition: .5s ease-in-out;
+  transition: 0.5s ease-in-out;
   background-color: rgb(0, 89, 255);
   padding: 0px 12px 0px 0px;
 }
 
 .input::placeholder,
 .input {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   font-size: 17px;
 }
 
@@ -520,26 +676,38 @@ async function obtenerUrlsPokemon() {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-/*   width: 150px; */
+  /*   width: 150px; */
   height: 50px;
   outline: none;
   border-style: none;
   border-radius: 50%;
   pointer-events: painted;
   background-color: transparent;
-  transition: .2s linear;
+  transition: 0.2s linear;
   color: #ffffff;
   font-size: 25px;
   font-family: "Pa ver";
 }
 
-.icon:focus~.input,
+.icon:focus ~ .input,
 .input:focus {
   box-shadow: none;
   width: 250px;
   border-radius: 0px;
   background-color: transparent;
   border-bottom: 2px solid #ffffff;
-  transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+  transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
+}
+.progress-bar {
+  width: 100%;
+  height: 10px; 
+  background-color: #ccc; 
+  margin-top: 5px; 
+}
+
+.progress {
+  height: 100%;
+  background-color: #4caf50; 
+  transition: width 1s ease-in-out; 
 }
 </style>
