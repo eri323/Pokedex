@@ -19,68 +19,51 @@
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
           <i class="fa-solid fa-fire fa-beat-fade" id="LogoFiltrar"></i>
-          Fire</label
-        >
+          Fire</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Grass</label
-        >
+          Grass</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Electric</label
-        >
+          Electric</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Water</label
-        >
+          Water</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Ground</label
-        >
+          Ground</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Rock</label
-        >
+          Rock</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Fairy</label
-        >
+          Fairy</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Poison</label
-        >
+          Poison</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Bug</label
-        >
+          Bug</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Dragon</label
-        >
+          Dragon</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Psychic</label
-        >
+          Psychic</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Flying</label
-        >
+          Flying</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
-          Fighting</label
-        >
+          Fighting</label>
       </div>
     </div>
 
     <div class="main" v-if="MostrarMain">
       <div class="ContainerTarjetas">
-        <button
-          v-for="(pokemon, index) in filteredPokemonData"
-          :key="index"
-          :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }"
-          @click="obtenerDetallesPokemon(pokemon)"
-          class="Tarjeta"
-        >
+        <button v-for="(pokemon, index) in filteredPokemonData" :key="index"
+          :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }" @click="obtenerDetallesPokemon(pokemon)"
+          class="Tarjeta">
           <div class="containerImgTarjeta">
             <img :src="pokemon.img" alt="" class="imgTarjeta" />
           </div>
@@ -88,13 +71,8 @@
             <p style="margin: 0" class="IdTarjeta">#{{ pokemon.numero }}</p>
             <p style="margin: 0" class="NameTarjeta">{{ pokemon.nombre }}</p>
             <span style="display: flex">
-              <p
-                style="margin: 0px 7px"
-                class="Typetarjeta"
-                v-for="(tipo, index) in pokemon.tipo_pk"
-                :key="index"
-                :style="{ backgroundColor: getColorByTypeDetalle(tipo) }"
-              >
+              <p style="margin: 0px 7px" class="Typetarjeta" v-for="(tipo, index) in pokemon.tipo_pk" :key="index"
+                :style="{ backgroundColor: getColorByTypeDetalle(tipo) }">
                 {{ tipo }}
               </p>
             </span>
@@ -102,11 +80,7 @@
         </button>
       </div>
       <div class="ContainerBtnVerMas">
-        <button
-          class="BtnVerMas"
-          @click="obtenerUrlsPokemon2()"
-          :disabled="currentPage * 51 > 150"
-        >
+        <button class="BtnVerMas" @click="obtenerUrlsPokemon2()" :disabled="currentPage * 51 > 150">
           <div>
             <span>
               <p>Ver Mas</p>
@@ -122,36 +96,39 @@
     </div>
 
     <div class="Detalles" v-if="Mostrar">
+      <div class="NamePokemon">
+        <div class="nameContainer">
+          <h2 class="name">{{ name }}</h2>
+        </div>
+      </div>
       <div class="funcion">
         <div class="funcionPart1">
-          <div class="nameContainer">
-            <h2 class="name">{{ name }}</h2>
-          </div>
-
           <div class="containerImg">
             <h2 class="Id">#{{ Id }}</h2>
             <img :src="img" class="img" />
           </div>
-          <div class="Types">
-            <h2
-              v-for="(item, index) in tipoPk"
-              :key="index"
-              class="types"
-              :style="{ backgroundColor: getColorByTypeDetalle(item) }"
-            >
-              {{ item }}
-            </h2>
-          </div>
+           <div class="ConatinerPesoAltura">
+                <div class="ContainerPeso">
+                  <h2>Weight</h2>
+                  <h2>{{ Weight }} Kg</h2>
+
+                </div>
+                <div class="ContainerAltura">
+                  <h2>Height</h2>
+                  <h2>{{ Height }} M</h2>
+
+                </div>
+
+
+              </div>
+          
         </div>
         <div class="containerDatos">
           <div class="datos">
             <h2>
               HP
               <div class="progress-bar">
-                <div
-                  class="progress"
-                  :style="{ width: (StatHp / 300) * 100 + '%' }"
-                ></div>
+                <div class="progress" :style="{ width: (StatHp / 300) * 100 + '%' }"></div>
               </div>
               {{ StatHp }}
             </h2>
@@ -159,73 +136,48 @@
             <h2>
               Attack
               <div class="progress-bar">
-                <div
-                  class="progress"
-                  :style="{ width: (Attack / 300) * 100 + '%' }"
-                ></div>
+                <div class="progress" :style="{ width: (Attack / 300) * 100 + '%' }"></div>
               </div>
               {{ Attack }}
             </h2>
             <h2>
               Defense
               <div class="progress-bar">
-                <div
-                  class="progress"
-                  :style="{ width: (Defense / 300) * 100 + '%' }"
-                ></div>
+                <div class="progress" :style="{ width: (Defense / 300) * 100 + '%' }"></div>
               </div>
               {{ Defense }}
             </h2>
             <h2>
               SpecialAttack
               <div class="progress-bar">
-                <div
-                  class="progress"
-                  :style="{ width: (SpecialAttack / 300) * 100 + '%' }"
-                ></div>
+                <div class="progress" :style="{ width: (SpecialAttack / 300) * 100 + '%' }"></div>
               </div>
               {{ SpecialAttack }}
             </h2>
             <h2>
               SpecialDefense
               <div class="progress-bar">
-                <div
-                  class="progress"
-                  :style="{ width: (SpecialDefense / 300) * 100 + '%' }"
-                ></div>
+                <div class="progress" :style="{ width: (SpecialDefense / 300) * 100 + '%' }"></div>
               </div>
               {{ SpecialDefense }}
             </h2>
             <h2>
               Speed
               <div class="progress-bar">
-                <div
-                  class="progress"
-                  :style="{ width: (Speed / 300) * 100 + '%' }"
-                ></div>
+                <div class="progress" :style="{ width: (Speed / 300) * 100 + '%' }"></div>
               </div>
               {{ Speed }}
             </h2>
-            <h2>
-              Weight
-              <div class="progress-bar">
-                <div
-                  class="progress"
-                  :style="{ width: (Weight / 1000) * 100 + '%' }"
-                ></div>
-              </div>
-              {{ Weight }} KG
-            </h2>
-            <h2>
-              Height
-              <div class="progress-bar">
-                <div class="progress" :style="{ width: Height + '%' }"></div>
-              </div>
-              {{ Height }}
-            </h2>
+           
           </div>
         </div>
       </div>
+      <div class="Types">
+              <h2 v-for="(item, index) in tipoPk" :key="index" class="types"
+                :style="{ backgroundColor: getColorByTypeDetalle(item) }">
+                {{ item }}
+              </h2>
+            </div>
     </div>
   </div>
 </template>
@@ -253,7 +205,7 @@ let currentPage = ref(1);
 let pokemonData = ref([]);
 let Mostrar = ref(false);
 let MostrarMain = ref(true);
-let MostrarFiltrar = ref(true);
+let MostrarFiltrar = ref(false);
 function search() {
   const query = searchQuery.value.toLowerCase();
   return pokemonData.value.filter((pokemon) =>
@@ -263,9 +215,9 @@ function search() {
 
 let filteredPokemonData = computed(() => {
   if (searchQuery.value.trim() === "") {
-    return pokemonData.value; // Mostrar todas las tarjetas si no hay consulta
+    return pokemonData.value;
   } else {
-    return search(); // Mostrar tarjetas filtradas en función de la consulta
+    return search();
   }
 });
 
@@ -495,6 +447,7 @@ async function obtenerUrlsPokemon2() {
   display: flex;
   justify-content: center;
 }
+
 .BtnVerMas {
   outline: 0;
   border: 0;
@@ -553,6 +506,7 @@ async function obtenerUrlsPokemon2() {
 .imgTarjeta {
   width: 100px;
 }
+
 .BtnFiltrar {
   font-family: "Pa ver";
   color: #ffffff;
@@ -561,6 +515,7 @@ async function obtenerUrlsPokemon2() {
   border: none;
   cursor: pointer;
 }
+
 .Tarjeta {
   display: flex;
   flex-direction: column;
@@ -574,12 +529,14 @@ async function obtenerUrlsPokemon2() {
   border: none;
   font-family: "Pa ver";
 }
+
 .ContainerTarjetas {
   display: flex;
   flex-wrap: wrap;
   gap: 85px;
   justify-content: space-around;
 }
+
 .containerDatosTarjeta {
   display: flex;
   flex-direction: column;
@@ -638,6 +595,7 @@ async function obtenerUrlsPokemon2() {
   justify-content: center;
   align-items: center;
   margin-top: 100px;
+  flex-direction: column;
 }
 
 .funcion {
@@ -647,9 +605,11 @@ async function obtenerUrlsPokemon2() {
   align-items: center;
   justify-content: space-around;
 }
+
 .ContainerOpcs {
   display: flex;
 }
+
 .datos {
   display: flex;
   flex-direction: column;
@@ -657,16 +617,19 @@ async function obtenerUrlsPokemon2() {
   justify-content: space-between;
   width: 80%;
 }
+
 .containerDatos {
   width: 50%;
   display: flex;
   justify-content: center;
 }
+
 .datos h2 {
   display: flex;
   gap: 20px;
   align-items: center;
 }
+
 .cyberpunk-checkbox {
   position: absolute;
   appearance: none;
@@ -699,6 +662,7 @@ async function obtenerUrlsPokemon2() {
   display: flex;
   align-items: center;
 }
+
 .ContainerFiltrar {
   display: flex;
   gap: 25px;
@@ -706,6 +670,7 @@ async function obtenerUrlsPokemon2() {
   padding: 20px 50px;
   justify-content: center;
 }
+
 .PokeRes {
   background-color: transparent;
   border: none;
@@ -823,7 +788,41 @@ async function obtenerUrlsPokemon2() {
   font-family: "Pa ver";
 }
 
-.icon:focus ~ .input,
+.ConatinerPesoAltura {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.ContainerAltura {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  /* background-color: rgb(0, 89, 255); */
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.ContainerPeso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  /* background-color: rgb(0, 89, 255); */
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.ContainerAltura h2 {
+  margin: 0;
+}
+
+.ContainerPeso h2 {
+  margin: 0;
+}
+
+.icon:focus~.input,
 .input:focus {
   box-shadow: none;
   width: 250px;
@@ -832,6 +831,7 @@ async function obtenerUrlsPokemon2() {
   border-bottom: 2px solid #ffffff;
   transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
 }
+
 .progress-bar {
   width: 100%;
   height: 10px;
@@ -844,9 +844,11 @@ async function obtenerUrlsPokemon2() {
   background-color: #4caf50;
   transition: width 1s ease-in-out;
 }
+
 #Plus {
   font-size: 35px;
 }
+
 #LogoFiltrar {
   position: relative;
   height: 18px;
