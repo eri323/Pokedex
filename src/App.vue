@@ -10,15 +10,15 @@
           </button>
           <input v-model="searchQuery" class="input" name="text" type="text" />
         </div>
-        <button class="BtnFiltrar">
+        <button class="BtnFiltrar" @click="MostrarFiltro()">
           <i class="fa-sharp fa-solid fa-filter" style="color: #000000"></i>
           Filtrar
         </button>
       </div>
-      <div class="ContainerFiltrar" v-if="MostrarFiltrar">
+      <div class="ContainerFiltrar" v-if="MostrarFiltrar" :class="{ 'show': MostrarFiltrar }">
         <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          <i class="fa-solid fa-fire fa-beat-fade" id="LogoFiltrar"></i>
+          <input type="checkbox" class="cyberpunk-checkbox" v-model="selectedTypes.fire" @click="filterPokemonByType"/>
+        <!--   <i class="fa-solid fa-fire fa-beat-fade" id="LogoFiltrar"></i> -->
           Fire</label>
         <label class="cyberpunk-checkbox-label">
           <input type="checkbox" class="cyberpunk-checkbox" />
@@ -201,6 +201,11 @@ let Height = ref("");
 let tipoPk = ref([]);
 let loading = ref(false);
 let currentPage = ref(1);
+let selectedTypes = ref({
+  Fire: false,
+  grass: false,
+  // Agrega otros tipos de Pokémon aquí
+});
 
 let pokemonData = ref([]);
 let Mostrar = ref(false);
@@ -242,6 +247,7 @@ async function obtenerDetallesPokemon(pokemon) {
 
   Mostrar.value = true;
   MostrarMain.value = false;
+  MostrarFiltrar.value = false;
 }
 
 function Volver() {
@@ -260,7 +266,9 @@ function Volver() {
   Mostrar.value = false;
   MostrarMain.value = true;
 }
-
+function MostrarFiltro (){
+  MostrarFiltrar.value = true
+}
 function getColorByType(tipo) {
   switch (tipo) {
     case "fire":
@@ -359,7 +367,16 @@ function getColorByTypeFondo(tipo) {
       return "white"; */
   }
 }
-
+function filterPokemonByType() {
+  filteredPokemonData.value = pokemonData.value.filter((pokemon) => {
+    if (selectedTypes.fire && pokemon.tipo_pk.includes('Fire')) {
+      return true;
+    }
+    // Agrega condiciones similares para otros tipos de Pokémon seleccionados
+    return false;
+  });
+  MostrarFiltrar.value=true
+}
 onMounted(() => {
   obtenerUrlsPokemon(); // Llama a la función cuando la página se carga
 });
@@ -390,9 +407,9 @@ async function obtenerUrlsPokemon2() {
 
   const pokemonPerPage = 50;
 
-  if (currentPage.value * pokemonPerPage > 150) {
+  /* if (currentPage.value * pokemonPerPage > 1000) {
     return;
-  }
+  } */
 
   loading.value = true;
 
@@ -588,6 +605,7 @@ async function obtenerUrlsPokemon2() {
   padding: 0px 200px;
   margin: 110px 0px 50px 0px;
   gap: 55px;
+  transition: margin-top 0.3s ease-in-out;
 }
 
 .Detalles {
@@ -646,8 +664,16 @@ async function obtenerUrlsPokemon2() {
 
 .cyberpunk-checkbox:before {
   content: "";
-  appearance: none;
-  background-color: red;
+  background-color: #ffffff;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
 }
 
 .cyberpunk-checkbox:checked:before {
@@ -662,13 +688,21 @@ async function obtenerUrlsPokemon2() {
   display: flex;
   align-items: center;
 }
-
+.show {
+  transform: translateY(0);
+  display: block;
+}
 .ContainerFiltrar {
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
   padding: 20px 50px;
   justify-content: center;
+    
+  transform: translateY(10%);
+  transition: transform 0.3s ease-in-out;
+  
+  
 }
 
 .PokeRes {
