@@ -15,47 +15,16 @@
           Filtrar
         </button>
       </div>
-      <div class="ContainerFiltrar" v-if="MostrarFiltrar" :class="{ 'show': MostrarFiltrar }">
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" v-model="selectedTypes.fire" @click="filterPokemonByType"/>
-        <!--   <i class="fa-solid fa-fire fa-beat-fade" id="LogoFiltrar"></i> -->
-          Fire</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Grass</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Electric</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Water</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Ground</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Rock</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Fairy</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Poison</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Bug</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Dragon</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Psychic</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Flying</label>
-        <label class="cyberpunk-checkbox-label">
-          <input type="checkbox" class="cyberpunk-checkbox" />
-          Fighting</label>
+      <div class="ContainerFiltrar" v-if="MostrarFiltrar">
+     <select v-model="selectedType" class="Select" >
+        
+        <option value="">Todos</option>
+        <option v-for="type in availableTypes" :key="type" :value="type">{{ type }}</option>
+      </select>
+
+
+
+
       </div>
     </div>
 
@@ -80,7 +49,7 @@
         </button>
       </div>
       <div class="ContainerBtnVerMas">
-        <button class="BtnVerMas" @click="obtenerUrlsPokemon2()" :disabled="currentPage * 51 > 150">
+        <button class="BtnVerMas" @click="obtenerUrlsPokemon2()" :disabled="currentPage * 51 > 1200">
           <div>
             <span>
               <p>Ver Mas</p>
@@ -95,7 +64,7 @@
       </div>
     </div>
 
-    <div class="Detalles" v-if="Mostrar">
+    <div class="Detalles" v-if="Mostrar" :style="{ backgroundImage: backgroundImage }">
       <div class="NamePokemon">
         <div class="nameContainer">
           <h2 class="name">{{ name }}</h2>
@@ -107,21 +76,21 @@
             <h2 class="Id">#{{ Id }}</h2>
             <img :src="img" class="img" />
           </div>
-           <div class="ConatinerPesoAltura">
-                <div class="ContainerPeso">
-                  <h2>Weight</h2>
-                  <h2>{{ Weight }} Kg</h2>
+          <div class="ConatinerPesoAltura">
+            <div class="ContainerPeso">
+              <h2>Weight</h2>
+              <h2>{{ Weight }} Kg</h2>
 
-                </div>
-                <div class="ContainerAltura">
-                  <h2>Height</h2>
-                  <h2>{{ Height }} M</h2>
+            </div>
+            <div class="ContainerAltura">
+              <h2>Height</h2>
+              <h2>{{ Height }} M</h2>
 
-                </div>
+            </div>
 
 
-              </div>
-          
+          </div>
+
         </div>
         <div class="containerDatos">
           <div class="datos">
@@ -168,16 +137,16 @@
               </div>
               {{ Speed }}
             </h2>
-           
+
           </div>
         </div>
       </div>
       <div class="Types">
-              <h2 v-for="(item, index) in tipoPk" :key="index" class="types"
-                :style="{ backgroundColor: getColorByTypeDetalle(item) }">
-                {{ item }}
-              </h2>
-            </div>
+        <h2 v-for="(item, index) in tipoPk" :key="index" class="types"
+          :style="{ backgroundColor: getColorByTypeDetalle(item) }">
+          {{ item }}
+        </h2>
+      </div>
     </div>
   </div>
 </template>
@@ -202,10 +171,23 @@ let tipoPk = ref([]);
 let loading = ref(false);
 let currentPage = ref(1);
 let selectedTypes = ref({
-  Fire: false,
+  fire: false,
   grass: false,
-  // Agrega otros tipos de Pokémon aquí
+  electric: false,
+  water: false,
+  ground: false,
+  rock: false,
+  fairy: false,
+  posion: false,
+  bug: false,
+  dragon: false,
+  psychic: false,
+  flying: false,
+  fighting: false,
+
+
 });
+
 
 let pokemonData = ref([]);
 let Mostrar = ref(false);
@@ -218,13 +200,44 @@ function search() {
   );
 }
 
-let filteredPokemonData = computed(() => {
-  if (searchQuery.value.trim() === "") {
-    return pokemonData.value;
-  } else {
-    return search();
+
+const availableTypes = [
+  'fire', 'grass', 'electric', 'water', 'ground',
+  'rock', 'fairy', 'poison', 'bug', 'dragon',
+  'psychic', 'flying', 'fighting'
+];
+
+let selectedType = ref('');
+
+
+const filteredPokemonData = computed(() => {
+  let filteredData = pokemonData.value;
+
+
+  if (selectedType.value) {
+    filteredData = filteredData.filter((pokemon) => pokemon.tipo_pk.includes(selectedType.value));
   }
+
+
+  if (searchQuery.value.trim() !== "") {
+    const query = searchQuery.value.toLowerCase();
+    filteredData = filteredData.filter((pokemon) =>
+      pokemon.nombre.toLowerCase().includes(query)
+    );
+  }
+
+  return filteredData;
 });
+
+let backgroundImage = ref(""); 
+function filtrarPokemon() {
+  filteredPokemonData.value = pokemonData.value.filter((pokemon) => {
+    return tipoPk.value.some((tipo) => selectedTypes.value[tipo]);
+  });
+}
+
+
+
 
 async function obtenerDetallesPokemon(pokemon) {
   const response = await axios.get(
@@ -241,10 +254,11 @@ async function obtenerDetallesPokemon(pokemon) {
   SpecialAttack.value = data.stats[3].base_stat;
   SpecialDefense.value = data.stats[4].base_stat;
   Speed.value = data.stats[5].base_stat;
-  Weight.value = data.weight;
-  Height.value = data.height;
+  Weight.value = data.weight / 10;
+  Height.value = data.height / 10;
   tipoPk.value = data.types.map((element) => element.type.name);
 
+  backgroundImage.value = `url('./assets/electric/${tipoPk}.jpg')`;
   Mostrar.value = true;
   MostrarMain.value = false;
   MostrarFiltrar.value = false;
@@ -261,12 +275,12 @@ function Volver() {
   SpecialDefense.value = "";
   Speed.value = "";
   tipoPk.value = [];
-  // Reemplaza esto con la forma correcta de obtener la lista completa
-  searchQuery.value = ""; // Restablecer el campo de búsqueda
+  searchQuery.value = "";
   Mostrar.value = false;
   MostrarMain.value = true;
+  MostrarFiltrar.value = false;
 }
-function MostrarFiltro (){
+function MostrarFiltro() {
   MostrarFiltrar.value = true
 }
 function getColorByType(tipo) {
@@ -330,53 +344,25 @@ function getColorByTypeDetalle(tipo) {
       return "#6D6984";
     case "fighting":
       return "#663030";
+    case "dark":
+      return "#3E3E3E"
+    case "steel":
+      return "#898E8C"
+    case "ghost":
+      return "#FFFFFF"
+    case "ice":
+      return "#78EFFF"
     default:
-      return "aqua";
+      return "#C9C9C9";
   }
 }
 
-function getColorByTypeFondo(tipo) {
-  switch (tipo) {
-    /* case "fire":
-      return "#FF2D00";
-    case "grass":
-      return "#009121"; */
-    case "electric":
-      return "url('./assets/Electric.jpg')";
-    /* case "water":
-      return "#00B7FF";
-    case "ground":
-      return "#635200";
-    case "rock":
-      return "#525252";
-    case "fairy":
-      return "#ED7FFF"; */
-    case "poison":
-      return "url('./assets/Poison.jpg')";
-    /*  case "bug":
-      return "#87C800";
-    case "dragon":
-      return "#AC0000";
-    case "psychic":
-      return "#008F88";
-    case "flying":
-      return "#6D6984";
-    case "fighting":
-      return "#663030"; */
-    /* default:
-      return "white"; */
+function getLogo() {
+  const logos = {
+
   }
 }
-function filterPokemonByType() {
-  filteredPokemonData.value = pokemonData.value.filter((pokemon) => {
-    if (selectedTypes.fire && pokemon.tipo_pk.includes('Fire')) {
-      return true;
-    }
-    // Agrega condiciones similares para otros tipos de Pokémon seleccionados
-    return false;
-  });
-  MostrarFiltrar.value=true
-}
+
 onMounted(() => {
   obtenerUrlsPokemon(); // Llama a la función cuando la página se carga
 });
@@ -521,7 +507,7 @@ async function obtenerUrlsPokemon2() {
 }
 
 .imgTarjeta {
-  width: 100px;
+  width: 150px;
 }
 
 .BtnFiltrar {
@@ -542,7 +528,7 @@ async function obtenerUrlsPokemon2() {
   padding: 15px;
   gap: 15px;
   cursor: pointer;
-  width: 200px;
+  width: 250px;
   border: none;
   font-family: "Pa ver";
 }
@@ -686,23 +672,17 @@ async function obtenerUrlsPokemon2() {
   cursor: pointer;
   user-select: none;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
-.show {
-  transform: translateY(0);
-  display: block;
-}
+
+
 .ContainerFiltrar {
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
   padding: 20px 50px;
   justify-content: center;
-    
-  transform: translateY(10%);
-  transition: transform 0.3s ease-in-out;
-  
-  
 }
 
 .PokeRes {
@@ -718,6 +698,8 @@ async function obtenerUrlsPokemon2() {
   display: flex;
   align-items: center;
   padding: 0;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .img {
@@ -727,7 +709,9 @@ async function obtenerUrlsPokemon2() {
 .Types {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 65px;
+  flex-wrap: wrap;
 }
 
 .types {
@@ -760,6 +744,10 @@ async function obtenerUrlsPokemon2() {
 .name {
   font-size: 100px;
   margin: 0;
+}
+
+.name::first-letter {
+  text-transform: uppercase;
 }
 
 .funcionPart1 {
@@ -826,6 +814,7 @@ async function obtenerUrlsPokemon2() {
   display: flex;
   width: 100%;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .ContainerAltura {
@@ -887,5 +876,54 @@ async function obtenerUrlsPokemon2() {
   position: relative;
   height: 18px;
   right: 30px;
+}
+.Select{
+  font-family: "Pa ver";
+  background-color:rgb(0, 89, 255);
+  border: none;
+  font-size: 25px;
+  color: white;
+  text-transform: capitalize;
+ 
+}
+@media screen and (max-width: 1000px){
+  .containerDatos{
+    width: 100%;
+  }
+  .main{
+    padding: 0px 50px;
+  }
+}
+@media screen and (max-width: 495px){
+  .Detalles{
+    margin-top: 35%;
+    padding: 0;
+  }
+  .main{
+    margin-top: 35%;
+  }
+}
+@media screen and (max-width: 1300px){
+  .main{
+    padding: 0px 100px;
+  }
+}
+@media screen and (max-width: 710px){
+
+  .main{
+    margin-top: 25%;
+  }
+}
+@media screen and (max-width: 580px){
+
+  .main{
+    margin-top: 35%;
+  }
+}
+@media screen and (max-width: 475px){
+
+  .main{
+    margin-top: 55%;
+  }
 }
 </style>
