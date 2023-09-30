@@ -2,7 +2,7 @@
   <div class="body">
     <div class="nav">
       <button class="PokeRes" @click="Volver()">Pokedex</button>
-      <div class="ContainerOpcs">
+      <div class="ContainerOpcs" v-if="MostrarMain">
         <div class="input-wrapper">
           <button class="icon">
             Buscar
@@ -14,25 +14,26 @@
           <i class="fa-sharp fa-solid fa-filter" style="color: #000000"></i>
           Filtrar
         </button>
-      </div>
-      <div class="ContainerFiltrar" v-if="MostrarFiltrar">
-     <select v-model="selectedType" class="Select" >
-        
-        <option value="">Todos</option>
-        <option v-for="type in availableTypes" :key="type" :value="type">{{ type }}</option>
-      </select>
-
-
-
-
+        <div class="ContainerFiltrar" v-if="MostrarFiltrar">
+          <select v-model="selectedType" class="Select">
+            <option value="">Todos</option>
+            <option v-for="type in availableTypes" :key="type" :value="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
 
     <div class="main" v-if="MostrarMain">
       <div class="ContainerTarjetas">
-        <button v-for="(pokemon, index) in filteredPokemonData" :key="index"
-          :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }" @click="obtenerDetallesPokemon(pokemon)"
-          class="Tarjeta">
+        <button
+          v-for="(pokemon, index) in filteredPokemonData"
+          :key="index"
+          :style="{ backgroundColor: getColorByType(pokemon.tipo_pk[0]) }"
+          @click="obtenerDetallesPokemon(pokemon)"
+          class="Tarjeta"
+        >
           <div class="containerImgTarjeta">
             <img :src="pokemon.img" alt="" class="imgTarjeta" />
           </div>
@@ -40,8 +41,13 @@
             <p style="margin: 0" class="IdTarjeta">#{{ pokemon.numero }}</p>
             <p style="margin: 0" class="NameTarjeta">{{ pokemon.nombre }}</p>
             <span style="display: flex">
-              <p style="margin: 0px 7px" class="Typetarjeta" v-for="(tipo, index) in pokemon.tipo_pk" :key="index"
-                :style="{ backgroundColor: getColorByTypeDetalle(tipo) }">
+              <p
+                style="margin: 0px 7px"
+                class="Typetarjeta"
+                v-for="(tipo, index) in pokemon.tipo_pk"
+                :key="index"
+                :style="{ backgroundColor: getColorByTypeDetalle(tipo) }"
+              >
                 {{ tipo }}
               </p>
             </span>
@@ -49,7 +55,11 @@
         </button>
       </div>
       <div class="ContainerBtnVerMas">
-        <button class="BtnVerMas" @click="obtenerUrlsPokemon2()" :disabled="currentPage * 51 > 1200">
+        <button
+          class="BtnVerMas"
+          @click="obtenerUrlsPokemon2()"
+          :disabled="currentPage * 51 > 1200"
+        >
           <div>
             <span>
               <p>Ver Mas</p>
@@ -64,7 +74,11 @@
       </div>
     </div>
 
-    <div class="Detalles" v-if="Mostrar" :style="{ backgroundImage: backgroundImage }">
+    <div
+      class="Detalles"
+      v-if="Mostrar"
+      :style="{ backgroundImage: backgroundImage }"
+    >
       <div class="NamePokemon">
         <div class="nameContainer">
           <h2 class="name">{{ name }}</h2>
@@ -80,24 +94,22 @@
             <div class="ContainerPeso">
               <h2>Weight</h2>
               <h2>{{ Weight }} Kg</h2>
-
             </div>
             <div class="ContainerAltura">
               <h2>Height</h2>
               <h2>{{ Height }} M</h2>
-
             </div>
-
-
           </div>
-
         </div>
         <div class="containerDatos">
           <div class="datos">
             <h2>
               HP
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (StatHp / 250) * 100 + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: (StatHp / 250) * 100 + '%' }"
+                ></div>
               </div>
               {{ StatHp }}
             </h2>
@@ -105,45 +117,63 @@
             <h2>
               Attack
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (Attack / 250) * 100 + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: (Attack / 250) * 100 + '%' }"
+                ></div>
               </div>
               {{ Attack }}
             </h2>
             <h2>
               Defense
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (Defense / 250) * 100 + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: (Defense / 250) * 100 + '%' }"
+                ></div>
               </div>
               {{ Defense }}
             </h2>
             <h2>
               SpecialAttack
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (SpecialAttack / 250) * 100 + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: (SpecialAttack / 250) * 100 + '%' }"
+                ></div>
               </div>
               {{ SpecialAttack }}
             </h2>
             <h2>
               SpecialDefense
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (SpecialDefense / 250) * 100 + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: (SpecialDefense / 250) * 100 + '%' }"
+                ></div>
               </div>
               {{ SpecialDefense }}
             </h2>
             <h2>
               Speed
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (Speed / 250) * 100 + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: (Speed / 250) * 100 + '%' }"
+                ></div>
               </div>
               {{ Speed }}
             </h2>
-
           </div>
         </div>
       </div>
       <div class="Types">
-        <h2 v-for="(item, index) in tipoPk" :key="index" class="types"
-          :style="{ backgroundColor: getColorByTypeDetalle(item) }">
+        <h2
+          v-for="(item, index) in tipoPk"
+          :key="index"
+          class="types"
+          :style="{ backgroundColor: getColorByTypeDetalle(item) }"
+        >
           {{ item }}
         </h2>
       </div>
@@ -191,10 +221,7 @@ let selectedTypes = ref({
   psychic: false,
   flying: false,
   fighting: false,
-
-
 });
-
 
 let pokemonData = ref([]);
 let Mostrar = ref(false);
@@ -207,24 +234,36 @@ function search() {
   );
 }
 
-
 const availableTypes = [
-  'fire', 'grass', 'electric', 'water', 'ground',
-  'rock', 'fairy', 'poison', 'bug', 'dragon',
-  'psychic', 'flying', 'fighting'
+  "fire",
+  "grass",
+  "electric",
+  "water",
+  "ground",
+  "rock",
+  "fairy",
+  "poison",
+  "bug",
+  "dragon",
+  "psychic",
+  "flying",
+  "fighting",
+  "normal",
+  "ice",
+  "dark",
+  "ghost",
 ];
 
-let selectedType = ref('');
-
+let selectedType = ref("");
 
 const filteredPokemonData = computed(() => {
   let filteredData = pokemonData.value;
 
-
   if (selectedType.value) {
-    filteredData = filteredData.filter((pokemon) => pokemon.tipo_pk.includes(selectedType.value));
+    filteredData = filteredData.filter((pokemon) =>
+      pokemon.tipo_pk.includes(selectedType.value)
+    );
   }
-
 
   if (searchQuery.value.trim() !== "") {
     const query = searchQuery.value.toLowerCase();
@@ -236,15 +275,12 @@ const filteredPokemonData = computed(() => {
   return filteredData;
 });
 
-let backgroundImage = ref(""); 
+let backgroundImage = ref("");
 function filtrarPokemon() {
   filteredPokemonData.value = pokemonData.value.filter((pokemon) => {
     return tipoPk.value.some((tipo) => selectedTypes.value[tipo]);
   });
 }
-
-
-
 
 async function obtenerDetallesPokemon(pokemon) {
   const response = await axios.get(
@@ -289,7 +325,7 @@ function Volver() {
   MostrarFiltrar.value = false;
 }
 function MostrarFiltro() {
-  MostrarFiltrar.value = true
+  MostrarFiltrar.value = true;
 }
 function getColorByType(tipo) {
   switch (tipo) {
@@ -319,6 +355,8 @@ function getColorByType(tipo) {
       return "#F5F5F5";
     case "fighting":
       return "#E6E0D4";
+    case "ghost":
+      return "#c9c9c9";
     default:
       return "white";
   }
@@ -353,22 +391,20 @@ function getColorByTypeDetalle(tipo) {
     case "fighting":
       return "#663030";
     case "dark":
-      return "#3E3E3E"
+      return "#3E3E3E";
     case "steel":
-      return "#898E8C"
+      return "#898E8C";
     case "ghost":
-      return "#FFFFFF"
+      return "#FFFFFF";
     case "ice":
-      return "#78EFFF"
+      return "#78EFFF";
     default:
       return "#C9C9C9";
   }
 }
 
 function getLogo() {
-  const logos = {
 
-  }
 }
 
 onMounted(() => {
@@ -540,7 +576,10 @@ async function obtenerUrlsPokemon2() {
   border: none;
   font-family: "Pa ver";
 }
-
+.Tarjeta:hover {
+  transform: scale(1.05);
+  z-index: 1;
+}
 .ContainerTarjetas {
   display: flex;
   flex-wrap: wrap;
@@ -590,6 +629,7 @@ async function obtenerUrlsPokemon2() {
   width: 100%;
   align-items: center;
   flex-wrap: wrap;
+  z-index: 2;
 }
 
 .main {
@@ -609,7 +649,7 @@ async function obtenerUrlsPokemon2() {
   align-items: center;
   padding-top: 100px;
   flex-direction: column;
- 
+  color: black;
 }
 
 .funcion {
@@ -686,12 +726,11 @@ async function obtenerUrlsPokemon2() {
   align-items: center;
 }
 
-
 .ContainerFiltrar {
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
-  padding: 20px 50px;
+  padding: 0 5px;
   justify-content: center;
 }
 
@@ -747,7 +786,7 @@ async function obtenerUrlsPokemon2() {
 }
 
 .Typetarjeta {
-  padding: 5px;
+  padding: 8px;
   border-radius: 15px;
 }
 
@@ -855,7 +894,7 @@ async function obtenerUrlsPokemon2() {
   margin: 0;
 }
 
-.icon:focus~.input,
+.icon:focus ~ .input,
 .input:focus {
   box-shadow: none;
   width: 250px;
@@ -887,55 +926,51 @@ async function obtenerUrlsPokemon2() {
   height: 18px;
   right: 30px;
 }
-.Select{
+.Select {
   font-family: "Pa ver";
-  background-color:rgb(0, 89, 255);
+  background-color: rgb(0, 89, 255);
   border: none;
   font-size: 25px;
   color: white;
   text-transform: capitalize;
- 
 }
-@media screen and (max-width: 1000px){
-  .containerDatos{
+@media screen and (max-width: 1000px) {
+  .containerDatos {
     width: 100%;
   }
-  .main{
+  .main {
     padding: 0px 50px;
   }
 }
-@media screen and (max-width: 495px){
-  .Detalles{
+@media screen and (max-width: 495px) {
+  .Detalles {
     padding-top: 35%;
     background-size: cover;
   }
-  .main{
+  .main {
     margin-top: 35%;
   }
 }
-@media screen and (max-width: 1300px){
-  .main{
+@media screen and (max-width: 1300px) {
+  .main {
     padding: 0px 100px;
   }
 }
-@media screen and (max-width: 710px){
-
-  .main{
+@media screen and (max-width: 710px) {
+  .main {
     margin-top: 25%;
   }
 }
-@media screen and (max-width: 580px){
-
-  .main{
+@media screen and (max-width: 580px) {
+  .main {
     margin-top: 35%;
   }
 }
-@media screen and (max-width: 475px){
-
-  .main{
+@media screen and (max-width: 475px) {
+  .main {
     margin-top: 55%;
   }
-  .name{
+  .name {
     font-size: 75px;
   }
 }
