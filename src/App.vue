@@ -97,7 +97,7 @@
             <h2>
               HP
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (StatHp / 300) * 100 + '%' }"></div>
+                <div class="progress" :style="{ width: (StatHp / 250) * 100 + '%' }"></div>
               </div>
               {{ StatHp }}
             </h2>
@@ -105,35 +105,35 @@
             <h2>
               Attack
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (Attack / 300) * 100 + '%' }"></div>
+                <div class="progress" :style="{ width: (Attack / 250) * 100 + '%' }"></div>
               </div>
               {{ Attack }}
             </h2>
             <h2>
               Defense
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (Defense / 300) * 100 + '%' }"></div>
+                <div class="progress" :style="{ width: (Defense / 250) * 100 + '%' }"></div>
               </div>
               {{ Defense }}
             </h2>
             <h2>
               SpecialAttack
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (SpecialAttack / 300) * 100 + '%' }"></div>
+                <div class="progress" :style="{ width: (SpecialAttack / 250) * 100 + '%' }"></div>
               </div>
               {{ SpecialAttack }}
             </h2>
             <h2>
               SpecialDefense
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (SpecialDefense / 300) * 100 + '%' }"></div>
+                <div class="progress" :style="{ width: (SpecialDefense / 250) * 100 + '%' }"></div>
               </div>
               {{ SpecialDefense }}
             </h2>
             <h2>
               Speed
               <div class="progress-bar">
-                <div class="progress" :style="{ width: (Speed / 300) * 100 + '%' }"></div>
+                <div class="progress" :style="{ width: (Speed / 250) * 100 + '%' }"></div>
               </div>
               {{ Speed }}
             </h2>
@@ -154,6 +154,13 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted, computed } from "vue";
+/* import electric from './assets/electric.jpg';
+import posion from './assets/posion.jpg'; */
+/* const pokemonImages = ref({
+  electric,
+  posion
+})
+ */
 
 let img = ref("");
 let name = ref("");
@@ -258,7 +265,8 @@ async function obtenerDetallesPokemon(pokemon) {
   Height.value = data.height / 10;
   tipoPk.value = data.types.map((element) => element.type.name);
 
-  backgroundImage.value = `url('./assets/electric/${tipoPk}.jpg')`;
+  backgroundImage.value = `url('./src/assets/${tipoPk.value[0]}.jpg')`;
+
   Mostrar.value = true;
   MostrarMain.value = false;
   MostrarFiltrar.value = false;
@@ -595,11 +603,13 @@ async function obtenerUrlsPokemon2() {
 }
 
 .Detalles {
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  padding-top: 100px;
   flex-direction: column;
+ 
 }
 
 .funcion {
@@ -896,8 +906,8 @@ async function obtenerUrlsPokemon2() {
 }
 @media screen and (max-width: 495px){
   .Detalles{
-    margin-top: 35%;
-    padding: 0;
+    padding-top: 35%;
+    background-size: cover;
   }
   .main{
     margin-top: 35%;
@@ -924,6 +934,9 @@ async function obtenerUrlsPokemon2() {
 
   .main{
     margin-top: 55%;
+  }
+  .name{
+    font-size: 75px;
   }
 }
 </style>
