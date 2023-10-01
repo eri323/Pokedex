@@ -301,7 +301,7 @@ async function obtenerDetallesPokemon(pokemon) {
   Height.value = data.height / 10;
   tipoPk.value = data.types.map((element) => element.type.name);
 
-  backgroundImage.value = `url('./src/assets/${tipoPk.value[0]}.jpg')`;
+  /* backgroundImage.value = `url('./src/assets/${tipoPk.value[0]}.jpg')`; */
 
   Mostrar.value = true;
   MostrarMain.value = false;
