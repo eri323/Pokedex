@@ -649,7 +649,7 @@ async function obtenerUrlsPokemon2() {
   align-items: center;
   padding-top: 100px;
   flex-direction: column;
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .funcion {
