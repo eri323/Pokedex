@@ -649,7 +649,7 @@ async function obtenerUrlsPokemon2() {
   align-items: center;
   padding-top: 100px;
   flex-direction: column;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 89, 255);
 }
 
 .funcion {
@@ -766,6 +766,7 @@ async function obtenerUrlsPokemon2() {
 .types {
   padding: 10px;
   border-radius: 10px;
+  color: white;
 }
 
 .Id {
@@ -933,6 +934,9 @@ async function obtenerUrlsPokemon2() {
   font-size: 25px;
   color: white;
   text-transform: capitalize;
+}
+.name{
+  color: white;
 }
 @media screen and (max-width: 1000px) {
   .containerDatos {
