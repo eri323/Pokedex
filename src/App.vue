@@ -649,7 +649,8 @@ async function obtenerUrlsPokemon2() {
   align-items: center;
   padding-top: 100px;
   flex-direction: column;
-  color: rgb(0, 89, 255);
+  color: rgb(255, 255, 255);
+  background-image: url('./assets/wallpaperflare.com_wallpaper (7).jpg');
 }
 
 .funcion {
