@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <div class="nav">
+    <div class="nav" v-if="MostrarMain">
       <button class="PokeRes" @click="Volver()">Pokedex</button>
       <div class="ContainerOpcs" v-if="MostrarMain">
         <div class="input-wrapper">
@@ -79,6 +79,23 @@
       v-if="Mostrar"
       :style="{ backgroundImage: backgroundImage }"
     >
+    <div class="containerVolver">
+      <button
+          class="BtnVolver"
+          @click="Volver()"
+        >
+          <div >
+            <span style="padding: 0px 0px;">
+              <p>Volver</p>
+            </span>
+          </div>
+          <div>
+            <span>
+              <i class="fa-solid fa-angles-left fa-beat" style="font-size: 30px;"></i>
+            </span>
+          </div>
+        </button>
+    </div>
       <div class="NamePokemon">
         <div class="nameContainer">
           <h2 class="name">{{ name }}</h2>
@@ -474,9 +491,12 @@ async function obtenerUrlsPokemon2() {
   flex-direction: column;
   justify-content: center;
   color: white;
-  margin: 0;
   font-family: "Pa ver";
   padding: 0px 0px 0px 0px;
+  background-image: url("./assets/wallpaperflare.com_wallpaper (1).jpg");
+  margin: 0;
+  text-transform: capitalize;
+  background-attachment: fixed;
 }
 
 @font-face {
@@ -487,13 +507,83 @@ async function obtenerUrlsPokemon2() {
 .img {
   width: 500px;
 }
-
-.ContainerBtnVerMas {
+.containerVolver{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  
+}
+.ContainerBtnVerMas  {
   background-color: transparent;
   padding: 0;
   display: flex;
   justify-content: center;
 }
+.BtnVolver {
+  outline: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 140px;
+  height: 50px;
+  border-radius: 0.5em;
+  box-shadow: 0 0.625em 1em 0 rgba(30, 143, 255, 0.35);
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  
+}
+
+.BtnVolver div {
+  transform: translateY(0px);
+  width: 100%;
+  
+}
+
+.BtnVolver,
+.BtnVolver div {
+  transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.BtnVolver div span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+ 
+}
+
+.BtnVolver div:nth-child(1) {
+  background-color: rgb(0, 89, 255);
+}
+
+.BtnVolver div:nth-child(2) {
+  background-color: #21dc62;
+}
+
+.BtnVolver:hover div {
+  transform: translateY(-50px);
+}
+
+.BtnVolver p {
+  font-size: 25px;
+  font-weight: bold;
+  color: #ffffff;
+  font-family: "Pa ver";
+}
+
+.BtnVolver:active {
+  transform: scale(0.95);
+}
+
+
+
+
+
+
+
+
 
 .BtnVerMas {
   outline: 0;
@@ -647,10 +737,10 @@ async function obtenerUrlsPokemon2() {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 100px;
+ height: 100%;
   flex-direction: column;
-  color: rgb(255, 255, 255);
-  background-image: url('./assets/wallpaperflare.com_wallpaper (7).jpg');
+  color: rgb(0, 0, 0);
+  background-image: url('./assets/normal.jpg');
 }
 
 .funcion {
@@ -795,6 +885,7 @@ async function obtenerUrlsPokemon2() {
 .name {
   font-size: 100px;
   margin: 0;
+  color: black;
 }
 
 .name::first-letter {
@@ -936,9 +1027,7 @@ async function obtenerUrlsPokemon2() {
   color: white;
   text-transform: capitalize;
 }
-.name{
-  color: white;
-}
+
 @media screen and (max-width: 1000px) {
   .containerDatos {
     width: 100%;
