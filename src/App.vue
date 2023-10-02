@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <div class="nav" v-if="MostrarMain">
+    <div class="nav" >
       <button class="PokeRes" @click="Volver()">Pokedex</button>
       <div class="ContainerOpcs" v-if="MostrarMain">
         <div class="input-wrapper">
@@ -80,7 +80,7 @@
       :style="{ backgroundImage: backgroundImage }"
     >
     <div class="containerVolver">
-      <button
+   <!--    <button
           class="BtnVolver"
           @click="Volver()"
         >
@@ -94,7 +94,7 @@
               <i class="fa-solid fa-angles-left fa-beat" style="font-size: 30px;"></i>
             </span>
           </div>
-        </button>
+        </button -->
     </div>
       <div class="NamePokemon">
         <div class="nameContainer">
@@ -493,10 +493,7 @@ async function obtenerUrlsPokemon2() {
   color: white;
   font-family: "Pa ver";
   padding: 0px 0px 0px 0px;
-  background-image: url("./assets/wallpaperflare.com_wallpaper (1).jpg");
-  margin: 0;
-  text-transform: capitalize;
-  background-attachment: fixed;
+
 }
 
 @font-face {
@@ -734,10 +731,11 @@ async function obtenerUrlsPokemon2() {
 
 .Detalles {
   background-size: cover;
+  background-attachment: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
- height: 100%;
+  padding: 137px 0px;
   flex-direction: column;
   color: rgb(0, 0, 0);
   background-image: url('./assets/normal.jpg');
@@ -745,10 +743,11 @@ async function obtenerUrlsPokemon2() {
 
 .funcion {
   display: flex;
-  width: 90%;
+  width: 100%;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
+
 }
 
 .ContainerOpcs {

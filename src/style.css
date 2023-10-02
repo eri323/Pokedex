@@ -1,7 +1,11 @@
 body{
   
 margin: 0;
-  
+  background-image: url("./assets/wallpaperflare.com_wallpaper (1).jpg");
+    margin: 0;
+    text-transform: capitalize;
+    background-attachment: fixed;
+    background-size: cover;
 
 }
 
