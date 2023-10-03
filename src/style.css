@@ -1,6 +1,6 @@
 body{
-  
-margin: 0;
+   /* Ocupa el 100% del ancho del body */
+  height: 100%; /* Ocupa el 100% del alto del body */
   background-image: url("./assets/wallpaperflare.com_wallpaper (1).jpg");
     margin: 0;
     text-transform: capitalize;

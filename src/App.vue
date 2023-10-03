@@ -493,7 +493,8 @@ async function obtenerUrlsPokemon2() {
   color: white;
   font-family: "Pa ver";
   padding: 0px 0px 0px 0px;
-
+  /* Ocupa el 100% del ancho del body */
+  height: 100%; /* Ocupa el 100% del alto del body */
 }
 
 @font-face {
@@ -739,6 +740,8 @@ async function obtenerUrlsPokemon2() {
   flex-direction: column;
   color: rgb(0, 0, 0);
   background-image: url('./assets/normal.jpg');
+   width: 100%; /* Ocupa el 100% del ancho del body */
+  height: 100%; /* Ocupa el 100% del alto del body */
 }
 
 .funcion {
@@ -752,6 +755,9 @@ async function obtenerUrlsPokemon2() {
 
 .ContainerOpcs {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
 }
 
 .datos {
