@@ -152,7 +152,7 @@
               {{ Defense }}
             </h2>
             <h2>
-              SpecialAttack
+              Special Attack
               <div class="progress-bar">
                 <div
                   class="progress"
@@ -162,7 +162,7 @@
               {{ SpecialAttack }}
             </h2>
             <h2>
-              SpecialDefense
+              Special Defense
               <div class="progress-bar">
                 <div
                   class="progress"
@@ -995,7 +995,7 @@ async function obtenerUrlsPokemon2() {
 .icon:focus ~ .input,
 .input:focus {
   box-shadow: none;
-  width: 250px;
+  width: 100px;
   border-radius: 0px;
   background-color: transparent;
   border-bottom: 2px solid #ffffff;
@@ -1071,6 +1071,20 @@ async function obtenerUrlsPokemon2() {
   }
   .name {
     font-size: 75px;
+  }
+  .img{
+    width: 300px;
+  }
+  .Id{
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .name {
+    font-size: 55px;
+  }
+  .main {
+    margin-top: 60%;
   }
 }
 </style>
